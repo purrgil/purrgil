@@ -17,6 +17,7 @@ var (
     deployC  = deploy.Flag("container", "Deploy a single container").String()
 
     add         = app.Command("add", "Add a dependency to project")
+    addS      = add.Arg("pkg", "Add a service").String()
     addNs     = add.Flag("not-a-service", "Add only a git repository").Bool()
     addDk     = add.Flag("dockerhub", "Install image directly from dockerhub").Bool()
 

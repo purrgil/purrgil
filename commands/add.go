@@ -1,6 +1,9 @@
 package commands;
 
+// import (
+//     "github.com/guidiego/purrgil/utils"
+// )
+
 func Add() {
-    // TODO
-    println(" Add Command ")
+    println("Add Command")
 }
