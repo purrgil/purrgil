@@ -2,15 +2,46 @@ package utils;
 
 import (
     "io/ioutil"
-  //  "github.com/ghodss/yaml"
+    "fmt"
+    "gopkg.in/yaml.v2"
 )
 
-func DockerCompose() {
-    var path = GetDockerCompose()
-    b, err := ioutil.ReadFile(path)
+type DockerComposeStruct struct {
+    Version string `yaml:"version"`
+    Services interface{} `yaml:"services"`
+}
+
+// type PurrgilFile struct {
+//     version  string  `json:version`
+//     services interface{} `json:services`
+// }
+
+func GetDockerCompose() {
+    var path = GetDockerComposePath()
+    yamlFile, err := ioutil.ReadFile(path)
+
     if err != nil {
         panic(err)
     }
 
-    println(b)
+    var config DockerComposeStruct
+
+    err = yaml.Unmarshal(yamlFile, &config)
+    if err != nil {
+        panic(err)
+    }
+
+    return config
 }
+//
+// func PurrgilConfig() {
+//     var path = GetDockerCompose()
+//     b, err := ioutil.ReadFile(path)
+//     if err != nil {
+//         panic(err)
+//     }
+//
+//     parsed := yaml.Marshal(string(b))
+//
+//     println(parsed.version)
+// }
