@@ -2,46 +2,29 @@ package utils;
 
 import (
     "io/ioutil"
-    "fmt"
     "gopkg.in/yaml.v2"
+    "github.com/guidiego/purrgil/models"
 )
 
-type DockerComposeStruct struct {
-    Version string `yaml:"version"`
-    Services interface{} `yaml:"services"`
-}
-
-// type PurrgilFile struct {
-//     version  string  `json:version`
-//     services interface{} `json:services`
-// }
-
-func GetDockerCompose() {
-    var path = GetDockerComposePath()
-    yamlFile, err := ioutil.ReadFile(path)
+func parseYamlFile(filePath string, dockercompose *models.DockerComposeFile) {
+    yamlFile, err := ioutil.ReadFile(filePath)
 
     if err != nil {
         panic(err)
     }
 
-    var config DockerComposeStruct
+    err = yaml.Unmarshal(yamlFile, dockercompose)
 
-    err = yaml.Unmarshal(yamlFile, &config)
     if err != nil {
         panic(err)
     }
-
-    return config
 }
-//
-// func PurrgilConfig() {
-//     var path = GetDockerCompose()
-//     b, err := ioutil.ReadFile(path)
-//     if err != nil {
-//         panic(err)
-//     }
-//
-//     parsed := yaml.Marshal(string(b))
-//
-//     println(parsed.version)
-// }
+
+func GetDockerCompose() models.DockerComposeFile {
+    var dockercompose models.DockerComposeFile
+
+    dockerComposePath := Path.DockerCompose()
+    parseYamlFile(dockerComposePath, &dockercompose)
+
+    return dockercompose;
+}
