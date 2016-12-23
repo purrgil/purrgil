@@ -5,10 +5,7 @@ import (
     "os"
 )
 
-type Path struct {
-    DockerComposePath string
-    PurrgilConfigPath string
-}
+type Path struct {}
 
 func (p *Path) Resolve(path string) string {
     dir, err := os.Getwd()
@@ -21,12 +18,12 @@ func (p *Path) Resolve(path string) string {
 }
 
 func (p *Path) DockerCompose() string {
-    path := p.Resolve(p.DockerComposePath)
+    path := p.Resolve("/docker-compose.yml")
     return path;
 }
 
 func (p *Path) PurrgilConfig() string {
-    path := p.Resolve(p.PurrgilConfigPath)
+    path := p.Resolve("/purrgil.yml")
     return path;
 }
 

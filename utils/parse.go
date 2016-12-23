@@ -3,28 +3,32 @@ package utils;
 import (
     "io/ioutil"
     "gopkg.in/yaml.v2"
-    "github.com/guidiego/purrgil/models"
 )
 
-func parseYamlFile(filePath string, dockercompose *models.DockerComposeFile) {
+func ParseYamlFile(filePath string, file interface{}) {
     yamlFile, err := ioutil.ReadFile(filePath)
 
     if err != nil {
         panic(err)
     }
 
-    err = yaml.Unmarshal(yamlFile, dockercompose)
+    err = yaml.Unmarshal(yamlFile, file)
 
     if err != nil {
         panic(err)
     }
 }
 
-func GetDockerCompose() models.DockerComposeFile {
-    var dockercompose models.DockerComposeFile
+func SaveYamlFile(filePath string, file interface{}) {
+    yamlByte, err := yaml.Marshal(file)
 
-    dockerComposePath := Path.DockerCompose()
-    parseYamlFile(dockerComposePath, &dockercompose)
+    if err != nil {
+        panic(err)
+    }
 
-    return dockercompose;
+    err = ioutil.WriteFile(filePath, yamlByte, 0644)
+
+    if err != nil {
+        panic(err)
+    }
 }
