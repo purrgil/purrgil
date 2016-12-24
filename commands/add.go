@@ -9,14 +9,23 @@ func Add(pkdId string, opts models.AddConfig) {
     println("Add Command")
 
     purrgilconfig := models.Purrgil{}
+    dockercompose := models.DockerComposeFile{}
     purrgilNewPackage := models.PurrgilPackage{}
 
     purrgilconfig.Load()
-    // dockercompose := utils.GetDockerCompose()
-
-
+    dockercompose.Load()
     mountPurrgilPackage(&purrgilNewPackage, pkdId, opts)
-    saveInFiles(purrgilNewPackage, &purrgilconfig)
+
+    purrgilconfig.AddPackage(purrgilNewPackage)
+
+    if purrgilNewPackage.Service {
+        dockercompose.AddService(purrgilNewPackage)
+    } else {
+        dockercompose.TryLinkUtil(purrgilNewPackage)
+    }
+
+    purrgilconfig.Save()
+    dockercompose.Save()
 }
 
 func mountPurrgilPackage(pkg *models.PurrgilPackage, id string, opts models.AddConfig) {
@@ -24,11 +33,6 @@ func mountPurrgilPackage(pkg *models.PurrgilPackage, id string, opts models.AddC
     pkg.Name = normalizeName(id, opts.CustomName)
     pkg.Provider = getProvider(opts.Dockerhub)
     pkg.Service = !opts.IsService
-}
-
-func saveInFiles(pkg models.PurrgilPackage, purrgilconfig *models.Purrgil) {
-    purrgilconfig.AddPackage(pkg)
-    purrgilconfig.Save()
 }
 
 func normalizeName(id string, custom string) string {
