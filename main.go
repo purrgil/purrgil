@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/guidiego/purrgil/commands"
-	"github.com/guidiego/purrgil/models"
+	"github.com/guidiego/purrgil/configs"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -42,7 +42,7 @@ func main() {
 		commands.Deploy()
 
 	case add.FullCommand():
-		commands.Add(*addS, models.AddConfig{
+		commands.Add(*addS, configs.AddConfig{
 			IsService:  *addNs,
 			Dockerhub:  *addDk,
 			CustomName: *addName,
