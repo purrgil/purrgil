@@ -1,10 +1,11 @@
 package main
 
 import (
+	"os"
+
 	"github.com/guidiego/purrgil/commands"
 	"github.com/guidiego/purrgil/models"
 	"gopkg.in/alecthomas/kingpin.v2"
-	"os"
 )
 
 var (

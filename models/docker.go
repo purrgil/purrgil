@@ -1,22 +1,29 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/guidiego/gommunicate-shell"
 	"github.com/guidiego/purrgil/utils"
 )
 
 type DockerComposeFile struct {
-	Version  string                           `yaml:"version,omitempty"`
-	Services map[string]DockerComposeServices `yaml:"services,omitempty"`
+	Version  string                           `yaml:"version"`
+	Services map[string]DockerComposeServices `yaml:"services"`
 }
 
 type DockerComposeServices struct {
-	Build     string   `yaml:"build,omitempty"`
-	Image     string   `yaml:"image,omitempty"`
-	Command   string   `yaml:"command,omitempty"`
-	Ports     []string `yaml:"ports,omitempty"`
-	Volumes   []string `yaml:"volumes,omitempty"`
-	DependsOn []string `yaml:"depends_on,omitempty"`
+	Build     string   `yaml:"build"`
+	Image     string   `yaml:"image"`
+	Command   string   `yaml:"command"`
+	Ports     []string `yaml:"ports"`
+	Volumes   []string `yaml:"volumes"`
+	DependsOn []string `yaml:"depends_on"`
+}
+
+type Filer interface {
+	Load()
+	Save()
 }
 
 func (d *DockerComposeFile) AddService(pkg PurrgilPackage) {
@@ -38,7 +45,11 @@ func (d *DockerComposeFile) AddService(pkg PurrgilPackage) {
 		d.Services = map[string]DockerComposeServices{}
 	}
 
+	fmt.Println(serviceName)
+	fmt.Printf("%+v\n", dcs)
+
 	d.Services[serviceName] = dcs
+	fmt.Println(d.Services)
 }
 
 func (d *DockerComposeFile) TryLinkUtil(pkg PurrgilPackage) {

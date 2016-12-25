@@ -1,11 +1,13 @@
 package utils
 
 import (
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
+
+	"gopkg.in/yaml.v2"
 )
 
-func ParseYamlFile(filePath string, file interface{}) {
+func ParseYamlFile(filePath string, file Filer) {
+
 	yamlFile, err := ioutil.ReadFile(filePath)
 
 	if err != nil {
@@ -19,7 +21,7 @@ func ParseYamlFile(filePath string, file interface{}) {
 	}
 }
 
-func SaveYamlFile(filePath string, file interface{}) {
+func SaveYamlFile(filePath string, file Filer) {
 	yamlByte, err := yaml.Marshal(file)
 
 	if err != nil {
