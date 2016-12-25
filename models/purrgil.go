@@ -8,13 +8,8 @@ var path = Path{}
 
 type Purrgil struct {
 	Name     string           `yaml:"name"`
-<<<<<<< HEAD
-	Packages []PurrgilPackage `yaml:"packages"`
-	Settings PurrgilSettings  `yaml:"settings"`
-=======
 	Packages []PurrgilPackage `yaml:"packages,omitempty"`
 	Settings PurrgilSettings  `yaml:"settings,omitempty"`
->>>>>>> upstream/master
 }
 
 type PurrgilPackage struct {
