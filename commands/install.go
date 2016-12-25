@@ -1,11 +1,11 @@
-package commands;
+package commands
 
 import (
-    "fmt"
-//    "github.com/guidiego/purrgil/utils"
+	"fmt"
+	//    "github.com/guidiego/purrgil/utils"
 )
 
 func Install() {
-    // TODO
-    fmt.Println(" Install Command ")
+	// TODO
+	fmt.Println(" Install Command ")
 }

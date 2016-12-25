@@ -7,6 +7,7 @@ import (
 )
 
 func ParseYamlFile(filePath string, file Filer) {
+
 	yamlFile, err := ioutil.ReadFile(filePath)
 
 	if err != nil {

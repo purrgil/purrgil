@@ -1,6 +1,6 @@
-package commands;
+package commands
 
 func Start() {
-    // TODO
-    println(" Start Command ")
+	// TODO
+	println(" Start Command ")
 }
