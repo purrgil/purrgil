@@ -1,6 +1,6 @@
-package commands;
+package commands
 
 func Remove() {
-    // TODO
-    println(" Remove Command ")
+	// TODO
+	println(" Remove Command ")
 }

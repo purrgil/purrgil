@@ -1,39 +1,38 @@
-package models;
+package models
 
 import (
-    "github.com/guidiego/purrgil/utils"
+	"github.com/guidiego/purrgil/utils"
 )
 
-var path = Path{};
+var path = Path{}
 
 type Purrgil struct {
-    Name     string             `yaml:"name"`
-    Packages []PurrgilPackage   `yaml:"packages"`
-    Settings PurrgilSettings    `yaml:"settings"`
+	Name     string           `yaml:"name"`
+	Packages []PurrgilPackage `yaml:"packages,omitempty"`
+	Settings PurrgilSettings  `yaml:"settings,omitempty"`
 }
 
 type PurrgilPackage struct {
-    Name      string   `yaml:"name"`
-    Identity  string   `yaml:"identity"`
-    Provider  string   `yaml:"provider"`
-    Service   bool     `yaml:"service"`
+	Name     string `yaml:"name"`
+	Identity string `yaml:"identity"`
+	Provider string `yaml:"provider"`
+	Service  bool   `yaml:"service"`
 }
 
 // TODO: Deploy settings and dev envs
 type PurrgilSettings struct {
-
 }
 
 func (p *Purrgil) AddPackage(pkg PurrgilPackage) {
-    p.Packages = append(p.Packages, pkg);
+	p.Packages = append(p.Packages, pkg)
 }
 
 func (p *Purrgil) Load() {
-    var configPath = path.PurrgilConfig();
-    utils.ParseYamlFile(configPath, p)
+	var configPath = path.PurrgilConfig()
+	utils.ParseYamlFile(configPath, p)
 }
 
 func (p *Purrgil) Save() {
-    var configPath = path.PurrgilConfig();
-    utils.SaveYamlFile(configPath, p)
+	var configPath = path.PurrgilConfig()
+	utils.SaveYamlFile(configPath, p)
 }

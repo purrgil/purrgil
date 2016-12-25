@@ -1,6 +1,6 @@
-package commands;
+package commands
 
 func Services() {
-    // TODO
-    println(" Services Command ")
+	// TODO
+	println(" Services Command ")
 }
