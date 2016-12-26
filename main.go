@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/guidiego/purrgil/commands"
-	"github.com/guidiego/purrgil/models"
+	"github.com/guidiego/purrgil/configs"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -14,8 +14,8 @@ var (
 	install  = app.Command("install", "Install Purrgil Project")
 	services = app.Command("services", "List all installed packages")
 
-	initM   = app.Command("init", "Init purrgil.yml")
-	pName   = initM.Arg("project name", "Name of the purrgil project").String()
+	initM = app.Command("init", "Init purrgil.yml")
+	pName = initM.Arg("project name", "Name of the purrgil project").String()
 
 	deploy  = app.Command("deploy", "Make project deploy")
 	deployC = deploy.Flag("container", "Deploy a single container").String()
@@ -42,7 +42,7 @@ func main() {
 		commands.Deploy()
 
 	case add.FullCommand():
-		commands.Add(*addS, models.AddConfig{
+		commands.Add(*addS, configs.AddConfig{
 			IsService:  *addNs,
 			Dockerhub:  *addDk,
 			CustomName: *addName,

@@ -1,59 +1,34 @@
 package commands
 
 import (
-	"github.com/guidiego/purrgil/models"
-	"strings"
+	"github.com/guidiego/purrgil/configs"
+	"github.com/guidiego/purrgil/file"
+	"github.com/guidiego/purrgil/interactiveshell"
+	"os"
 )
 
-func Add(pkdId string, opts models.AddConfig) {
+func Add(pkdId string, opts configs.AddConfig) {
 	println("Add Command")
 
-	purrgilconfig := models.Purrgil{}
-	dockercompose := models.DockerComposeFile{}
-	purrgilNewPackage := models.PurrgilPackage{}
+	path, _ := os.Getwd()
 
-	purrgilconfig.Load()
-	dockercompose.Load()
-	mountPurrgilPackage(&purrgilNewPackage, pkdId, opts)
+	purrgilconfig := file.NewPurrgil(path, "")
+	dockercompose := file.NewDockerCompose(path)
+	gitignore := file.NewGitIgnore(path)
+	purrgilNewPackage := file.NewPurrgilPackage(pkdId, opts)
 
 	purrgilconfig.AddPackage(purrgilNewPackage)
+	gitignore.AddIgnoredPath(purrgilNewPackage.Name)
 
 	if purrgilNewPackage.Service {
-		dockercompose.AddService(purrgilNewPackage)
+		serviceName, service := ishell.CollectDockerServiceInfo(purrgilNewPackage)
+		dockercompose.AddService(serviceName, service)
 	} else {
-		dockercompose.TryLinkUtil(purrgilNewPackage)
+		packages := ishell.CollectLinkPossibility(purrgilNewPackage)
+		dockercompose.LinkInService(purrgilNewPackage.Name, packages)
 	}
 
-	purrgilconfig.Save()
-	dockercompose.Save()
-}
-
-func mountPurrgilPackage(pkg *models.PurrgilPackage, id string, opts models.AddConfig) {
-	pkg.Identity = id
-	pkg.Name = normalizeName(id, opts.CustomName)
-	pkg.Provider = getProvider(opts.Dockerhub)
-	pkg.Service = !opts.IsService
-}
-
-func normalizeName(id string, custom string) string {
-	if custom != "" {
-		return custom
-	}
-
-	if strings.Contains(id, "/") {
-		splited := strings.Split(id, "/")
-		lastValue := len(splited) - 1
-
-		return splited[lastValue]
-	}
-
-	return id
-}
-
-func getProvider(isDockerhub bool) string {
-	if isDockerhub {
-		return "dockerhub"
-	}
-
-	return "github"
+	purrgilconfig.SaveFile()
+	dockercompose.SaveFile()
+	gitignore.SaveFile()
 }

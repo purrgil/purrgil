@@ -1,4 +1,4 @@
-package models
+package configs
 
 type AddConfig struct {
 	IsService  bool
