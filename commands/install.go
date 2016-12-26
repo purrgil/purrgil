@@ -1,11 +1,48 @@
 package commands
 
 import (
-	"fmt"
-	//    "github.com/guidiego/purrgil/utils"
+	"os"
+	"os/exec"
+
+	"github.com/guidiego/purrgil/file"
+	"github.com/guidiego/purrgil/interactiveshell"
 )
 
 func Install() {
-	// TODO
-	fmt.Println(" Install Command ")
+	ishell.PurrgilAlert("Starting Purrgil Install...")
+
+	wdpath, _ := os.Getwd()
+	purrgil := file.NewPurrgil(wdpath, "")
+
+	for _, pkg := range purrgil.Packages {
+		ishell.PurrgilAlert("Installing " + pkg.Name + " package...")
+
+		if pkg.Provider == "github" {
+			GitClone(pkg.Identity)
+		} else {
+			DockerPull(pkg.Identity)
+		}
+
+		ishell.PurrgilAlert(pkg.Name + " was successfuly installed")
+	}
+
+}
+
+func GitClone(repo string) {
+	ssh := "git@github.com:" + repo + ".git"
+	cmd := exec.Command("git", "clone", ssh)
+	err := cmd.Run()
+
+	if err != nil {
+		panic(err)
+	}
+}
+
+func DockerPull(repo string) {
+	cmd := exec.Command("docker", "pull", repo)
+	err := cmd.Run()
+
+	if err != nil {
+		panic(err)
+	}
 }

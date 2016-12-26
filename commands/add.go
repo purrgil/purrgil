@@ -7,18 +7,20 @@ import (
 	"os"
 )
 
-func Add(pkdId string, opts configs.AddConfig) {
-	println("Add Command")
+func Add(pkgId string, opts configs.AddConfig) {
+	ishell.PurrgilAlert("Starting Purrgil Add on Package: " + pkgId)
 
 	path, _ := os.Getwd()
 
 	purrgilconfig := file.NewPurrgil(path, "")
 	dockercompose := file.NewDockerCompose(path)
 	gitignore := file.NewGitIgnore(path)
-	purrgilNewPackage := file.NewPurrgilPackage(pkdId, opts)
+	purrgilNewPackage := file.NewPurrgilPackage(pkgId, opts)
 
 	purrgilconfig.AddPackage(purrgilNewPackage)
 	gitignore.AddIgnoredPath(purrgilNewPackage.Name)
+
+	ishell.PurrgilAlert("Preparing to Collect Aditional Information...")
 
 	if purrgilNewPackage.Service {
 		serviceName, service := ishell.CollectDockerServiceInfo(purrgilNewPackage)
@@ -31,4 +33,6 @@ func Add(pkdId string, opts configs.AddConfig) {
 	purrgilconfig.SaveFile()
 	dockercompose.SaveFile()
 	gitignore.SaveFile()
+
+	ishell.PurrgilAlert(purrgilNewPackage.Name + " was successfuly added")
 }

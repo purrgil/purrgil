@@ -40,7 +40,7 @@ func (f *File) LoadFile() {
 	content, err := ioutil.ReadFile(path)
 
 	if err != nil {
-		panic(err)
+		f.SaveFile()
 	}
 
 	f.content = content
