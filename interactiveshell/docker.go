@@ -1,8 +1,8 @@
 package ishell
 
 import (
-  "github.com/guidiego/purrgil/file"
 	"github.com/guidiego/gommunicate-shell"
+	"github.com/guidiego/purrgil/file"
 )
 
 func CollectDockerServiceInfo(pkg file.PurrgilPackage) (string, file.DockerComposeService) {
@@ -16,15 +16,15 @@ func CollectDockerServiceInfo(pkg file.PurrgilPackage) (string, file.DockerCompo
 
 	if pkg.Provider == "github" {
 		dcs.Build = "./" + pkg.Name + "/Dockerfile"
+		dcs.Volumes = append(dcs.Volumes, ".:/"+pkg.Name)
 	} else {
 		dcs.Image = pkg.Identity
 	}
 
-  dcs.Volumes = append(dcs.Volumes, ".:/" + pkg.Name)
-
-  return serviceName, dcs
+	return serviceName, dcs
 }
 
 func CollectLinkPossibility(pkg file.PurrgilPackage) []string {
-  return []string{}
+	println("You add a Non Service Package, did this will be used as a Volume? If yes, did you want that we add this in dockercompose for you?")
+	return gshell.AskTilBlankEnter("Digit the name of service that you want to add a volume", "(enter to skip)")
 }

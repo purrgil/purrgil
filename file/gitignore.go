@@ -1,25 +1,36 @@
 package file
 
+import (
+	"strings"
+)
+
 type GitIgnore struct {
-  File
-  ignored []string
+	File
+	ignoredList []string
 }
 
 func (g *GitIgnore) LoadFile() {
-    g.LoadFile()
-    // Transform g.content in a []string into g.ignored
+	g.File.LoadFile()
+
+	g.ignoredList = strings.Split(string(g.File.content), "\n")
 }
 
-func (g *GitIgnore) UpdateContent() []byte {
-  // Transform g.ignores in a []byte
-  return []byte{}
+func (g *GitIgnore) SaveFile() {
+	compiledString := strings.Join(g.ignoredList, "\n")
+
+	g.File.content = []byte(compiledString)
+	g.File.SaveFile()
+}
+
+func (g *GitIgnore) AddIgnoredPath(path string) {
+	g.ignoredList = append(g.ignoredList, path)
 }
 
 func NewGitIgnore(dir string) GitIgnore {
-  gitignore := GitIgnore{}
+	gitignore := GitIgnore{}
 
-  gitignore.InitFile(dir, ".gitignore", "")
-  gitignore.LoadFile()
+	gitignore.File.InitFile(dir, ".gitignore", "")
+	gitignore.LoadFile()
 
-  return gitignore
+	return gitignore
 }

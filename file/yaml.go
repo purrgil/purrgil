@@ -8,20 +8,20 @@ type Yaml struct {
 	File
 }
 
-
-func (y *Yaml) UpdateContent() []byte {
-	yamlByte, err := yaml.Marshal(y)
+func (y *Yaml) SaveFile(f Filer) {
+	yamlByte, err := yaml.Marshal(f)
 
 	if err != nil {
 		panic(err)
 	}
 
-	return yamlByte
+	y.File.content = yamlByte
+	y.File.SaveFile()
 }
 
-func (y *Yaml) LoadFile() {
+func (y *Yaml) LoadFile(f Filer) {
 	y.File.LoadFile()
-	err := yaml.Unmarshal(y.content, y)
+	err := yaml.Unmarshal(y.File.content, f)
 
 	if err != nil {
 		panic(err)

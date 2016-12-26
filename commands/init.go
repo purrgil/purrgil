@@ -1,11 +1,11 @@
 package commands
 
 import (
-	"os"
 	"fmt"
+	"os"
 
-	"github.com/guidiego/purrgil/file"
 	"github.com/fatih/color"
+	"github.com/guidiego/purrgil/file"
 )
 
 func Init(projectName string) {

@@ -1,8 +1,8 @@
 package file
 
 import (
-	"strings"
 	"github.com/guidiego/purrgil/configs"
+	"strings"
 )
 
 type PurrgilPackage struct {
