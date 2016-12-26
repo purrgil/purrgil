@@ -1,28 +1,27 @@
 package commands
 
 import (
-	"fmt"
 	"os"
 
-	"github.com/fatih/color"
 	"github.com/guidiego/purrgil/file"
+	"github.com/guidiego/purrgil/interactiveshell"
 )
 
 func Init(projectName string) {
-	magenta := color.New(color.FgMagenta).SprintFunc()
 	wd, _ := os.Getwd()
-	wdpath := wd + projectName
+	wdpath := wd + "/" + projectName
 
-	fmt.Printf("%s starting your app....\n", magenta("PURRGIL"))
+	ishell.PurrgilAlert("Init a new Purrgil App into: " + projectName)
 
 	os.Mkdir(projectName, 0777)
 
 	dockercompose := file.NewDockerCompose(wdpath)
 	purrgil := file.NewPurrgil(wdpath, projectName)
+	gitignore := file.NewGitIgnore(wdpath)
 
 	dockercompose.SaveFile()
 	purrgil.SaveFile()
+	gitignore.SaveFile()
 
-	fmt.Printf("%s app created! To enter in project give 'cd %s' \n", magenta("PURRGIL"), projectName)
-
+	ishell.PurrgilAlert("Project created! To enter in project give 'cd " + projectName + "'")
 }
