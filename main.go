@@ -32,7 +32,7 @@ var (
 	addName = add.Flag("name", "Give a custom name to package").String()
 
 	remove  = app.Command("rm", "Remove a dependency to project")
-	removeV = remove.Flag("virtual", "Remove only from root not from dependencies").Bool()
+	removeP = remove.Arg("package", "Name of Purrgil Package to Remove").String()
 )
 
 func main() {
@@ -54,7 +54,7 @@ func main() {
 		})
 
 	case remove.FullCommand():
-		commands.Remove()
+		commands.Remove(*removeP)
 
 	case packages.FullCommand():
 		commands.PackageList(configs.CommandPackageConfig{

@@ -40,6 +40,10 @@ func (d *DockerComposeFile) LoadFile() {
 	d.yaml.LoadFile(d)
 }
 
+func (d *DockerComposeFile) RemoveFromServices(pkgName string) {
+	delete(d.Services, pkgName)
+}
+
 func NewDockerCompose(dir string) DockerComposeFile {
 	dockercompose := DockerComposeFile{}
 

@@ -23,6 +23,18 @@ func (p *Purrgil) LoadFile() {
 	p.yaml.LoadFile(p)
 }
 
+func (p *Purrgil) RemoveFromPackages(pkgName string) {
+	filteredPkgs := []PurrgilPackage{}
+
+	for _, val := range p.Packages {
+		if val.Name != pkgName {
+			filteredPkgs = append(filteredPkgs, val)
+		}
+	}
+
+	p.Packages = filteredPkgs
+}
+
 func NewPurrgil(dir string, name string) Purrgil {
 	purrgil := Purrgil{}
 
