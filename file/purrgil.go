@@ -33,3 +33,15 @@ func NewPurrgil(dir string, name string) Purrgil {
 
 	return purrgil
 }
+
+func PurrgilGetPackages(pkgs []PurrgilPackage, filter func(PurrgilPackage) bool) []PurrgilPackage {
+	filteredList := []PurrgilPackage{}
+
+	for _, value := range pkgs {
+		if filter(value) {
+			filteredList = append(filteredList, value)
+		}
+	}
+
+	return filteredList
+}

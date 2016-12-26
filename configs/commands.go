@@ -5,3 +5,10 @@ type AddConfig struct {
 	Dockerhub  bool
 	CustomName string
 }
+
+type CommandPackageConfig struct {
+	IsGithub    bool
+	IsDockerhub bool
+	IsService   bool
+	IsNormal    bool
+}

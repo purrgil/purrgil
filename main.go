@@ -11,8 +11,13 @@ import (
 var (
 	app = kingpin.New("purrgil", "Bleh")
 
-	install  = app.Command("install", "Install Purrgil Project")
-	services = app.Command("services", "List all installed packages")
+	install = app.Command("install", "Install Purrgil Project")
+
+	packages   = app.Command("packages", "List all installed container packages")
+	pkgGit     = packages.Flag("github", "Filter only GITHUB provider packages").Bool()
+	pkgDock    = packages.Flag("dockerhub", "Filter only DOCKERHUB provider packages").Bool()
+	pkgService = packages.Flag("services", "Filter only SERVICES packages").Bool()
+	pkgNormal  = packages.Flag("non-service", "Filter only NON SERVICE packages").Bool()
 
 	initM = app.Command("init", "Init purrgil.yml")
 	pName = initM.Arg("project name", "Name of the purrgil project").String()
@@ -51,7 +56,12 @@ func main() {
 	case remove.FullCommand():
 		commands.Remove()
 
-	case services.FullCommand():
-		commands.Services()
+	case packages.FullCommand():
+		commands.PackageList(configs.CommandPackageConfig{
+			IsGithub:    *pkgGit,
+			IsDockerhub: *pkgDock,
+			IsService:   *pkgService,
+			IsNormal:    *pkgNormal,
+		})
 	}
 }
