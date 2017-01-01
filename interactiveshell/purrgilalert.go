@@ -15,6 +15,15 @@ func PurrgilAlert(message string) {
 	fmt.Printf("[%s:%s:%s] %s || %s \n", hour, minute, second, magenta("PURRGIL"), message)
 }
 
+func Err(message string, err error) {
+	red := color.New(color.FgRed).SprintFunc()
+	t := time.Now()
+	hour, minute, second := normalizeTime(t.Hour(), t.Minute(), t.Second())
+
+	fmt.Printf("[%s:%s:%s] %s || %s \n", hour, minute, second, red("ERROR"), message)
+	panic(err)
+}
+
 func normalizeTime(hour int, minute int, second int) (string, string, string) {
 	hourString := strconv.Itoa(hour)
 	minuteString := strconv.Itoa(minute)

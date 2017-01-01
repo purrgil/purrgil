@@ -17,6 +17,8 @@ func Add(pkgId string, opts configs.AddConfig) {
 	gitignore := file.NewGitIgnore(path)
 	purrgilNewPackage := file.NewPurrgilPackage(pkgId, opts)
 
+	PackageInstall(purrgilNewPackage)
+
 	purrgilconfig.AddPackage(purrgilNewPackage)
 	gitignore.AddIgnoredPath(purrgilNewPackage.Name)
 
