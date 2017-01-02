@@ -12,6 +12,8 @@ var (
 	app = kingpin.New("purrgil", "Bleh")
 
 	install = app.Command("install", "Install Purrgil Project")
+	up = app.Command("up", "Mount your application")
+	down = app.Command("down", "Drop your application")
 
 	packages   = app.Command("packages", "List all installed container packages")
 	pkgGit     = packages.Flag("github", "Filter only GITHUB provider packages").Bool()
@@ -55,6 +57,12 @@ func main() {
 
 	case remove.FullCommand():
 		commands.Remove(*removeP)
+
+	case up.FullCommand():
+		commands.Up()
+
+	case down.FullCommand():
+		commands.Down()
 
 	case packages.FullCommand():
 		commands.PackageList(configs.CommandPackageConfig{
