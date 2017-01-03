@@ -15,8 +15,8 @@ func CollectDockerServiceInfo(pkg file.PurrgilPackage) (string, file.DockerCompo
 	dcs.DependsOn = gshell.AskTilBlankEnter("Your image depends of another service, ex. 'db'", "(enter to skip)")
 
 	if pkg.Provider == "github" {
-		dcs.Build = "./" + pkg.Name + "/Dockerfile"
-		dcs.Volumes = append(dcs.Volumes, ".:/"+pkg.Name)
+		dcs.Build = "./" + pkg.Name + ""
+		dcs.Volumes = append(dcs.Volumes, "./"+pkg.Name+":/app")
 	} else {
 		dcs.Image = pkg.Identity
 	}

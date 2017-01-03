@@ -14,6 +14,12 @@ func Remove(pkgName string) {
 	dockercompose := file.NewDockerCompose(path)
 	gitignore := file.NewGitIgnore(path)
 
+	err := os.RemoveAll(path + "/" + pkgName)
+
+	if err != nil {
+		panic(err)
+	}
+
 	purrgilconfig.RemoveFromPackages(pkgName)
 	gitignore.RemoveFromIgnored(pkgName)
 	dockercompose.RemoveFromServices(pkgName)

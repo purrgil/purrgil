@@ -32,6 +32,7 @@ var (
 	addNs   = add.Flag("not-a-service", "Add only a git repository").Bool()
 	addDk   = add.Flag("dockerhub", "Install image directly from dockerhub").Bool()
 	addName = add.Flag("name", "Give a custom name to package").String()
+	addDcConfig  = add.Flag("compose-helper", "Active an interface to inject basic compose infos").Bool()
 
 	remove  = app.Command("rm", "Remove a dependency to project")
 	removeP = remove.Arg("package", "Name of Purrgil Package to Remove").String()
@@ -53,6 +54,7 @@ func main() {
 			IsService:  *addNs,
 			Dockerhub:  *addDk,
 			CustomName: *addName,
+			ComposeConfig: *addDcConfig,
 		})
 
 	case remove.FullCommand():

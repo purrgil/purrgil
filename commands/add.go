@@ -24,12 +24,8 @@ func Add(pkgId string, opts configs.AddConfig) {
 
 	ishell.PurrgilAlert("Preparing to Collect Aditional Information...")
 
-	if purrgilNewPackage.Service {
-		serviceName, service := ishell.CollectDockerServiceInfo(purrgilNewPackage)
-		dockercompose.AddService(serviceName, service)
-	} else {
-		packages := ishell.CollectLinkPossibility(purrgilNewPackage)
-		dockercompose.LinkInService(purrgilNewPackage.Name, packages)
+	if opts.ComposeConfig {
+		callComposeConfigInterface(purrgilNewPackage, &dockercompose)
 	}
 
 	purrgilconfig.SaveFile()
@@ -37,4 +33,14 @@ func Add(pkgId string, opts configs.AddConfig) {
 	gitignore.SaveFile()
 
 	ishell.PurrgilAlert(purrgilNewPackage.Name + " was successfuly added")
+}
+
+func callComposeConfigInterface(pkg file.PurrgilPackage, dc *file.DockerComposeFile) {
+	if pkg.Service {
+		serviceName, service := ishell.CollectDockerServiceInfo(pkg)
+		dc.AddService(serviceName, service)
+	} else {
+		packages := ishell.CollectLinkPossibility(pkg)
+		dc.LinkInService(pkg.Name, packages)
+	}
 }

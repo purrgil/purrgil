@@ -4,6 +4,7 @@ type AddConfig struct {
 	IsService  bool
 	Dockerhub  bool
 	CustomName string
+	ComposeConfig bool
 }
 
 type CommandPackageConfig struct {
