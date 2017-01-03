@@ -2,9 +2,9 @@ package commands
 
 import (
 	"fmt"
-	"github.com/guidiego/purrgil/configs"
-	"github.com/guidiego/purrgil/file"
-	"github.com/guidiego/purrgil/interactiveshell"
+	"github.com/purrgil/purrgil/configs"
+	"github.com/purrgil/purrgil/file"
+	"github.com/purrgil/purrgil/interactiveshell"
 	"os"
 )
 

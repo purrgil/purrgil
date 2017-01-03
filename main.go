@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/guidiego/purrgil/commands"
-	"github.com/guidiego/purrgil/configs"
+	"github.com/purrgil/purrgil/commands"
+	"github.com/purrgil/purrgil/configs"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 

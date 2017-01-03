@@ -1,8 +1,8 @@
 package commands
 
 import (
-	"github.com/guidiego/purrgil/file"
-	"github.com/guidiego/purrgil/interactiveshell"
+	"github.com/purrgil/purrgil/file"
+	"github.com/purrgil/purrgil/interactiveshell"
 	"os/exec"
 	"strings"
 	"os"

@@ -1,9 +1,9 @@
 ![Imgur](http://i.imgur.com/ixH5L0K.png)
 
-- [About](https://github.com/guidiego/purrgil#About)
-- [Motivation](https://github.com/guidiego/purrgil#Motivation)
-- [Install](https://github.com/guidiego/purrgil#Install)
-- [Commands](https://github.com/guidiego/purrgil#Commands)
+- [About](https://github.com/purrgil/purrgil#About)
+- [Motivation](https://github.com/purrgil/purrgil#Motivation)
+- [Install](https://github.com/purrgil/purrgil#Install)
+- [Commands](https://github.com/purrgil/purrgil#Commands)
   - Init
   - Install
   - Add
@@ -11,18 +11,20 @@
   - Packages
   - ?Deploy
   - ?Up
-- [Contribution](https://github.com/guidiego/purrgil#Contribution)
-  
+- [Contribution](https://github.com/purrgil/purrgil#Contribution)
+
 ## About
 Purrgil is a simple wrapper for **Docker stuff** that help you to manage a **mult-container enviroment**. After read a little about Docker Orchestrators and projects that use Docker to manage your enviroments I noticed that some people have a single repository with a `docker-compose.yml` and an `init.sh` to make all project work aright and use **orchestrators** only to deploy your application.
 
 The ideia of Purrgil is help you construct this enviroment, help you to provide across your stages and the principal: Give you more flexibility and power to use docker in development enviroment!
-  
+
 ## Motivation
-In final of 2016 we start migrate some stuff of our enviroment to Docker in enterprise, talk n read about that we found some problems and nice ways to resolve that. At some talks we discuss about create some scripts to make our work easily while we develop and deploy our services. So I create Purrgil to make those scripts and help people to create your enviroments faster! 
+In final of 2016 we start migrate some stuff of our enviroment to Docker in enterprise, talk n read about that we found some problems and nice ways to resolve that. At some talks we discuss about create some scripts to make our work easily while we develop and deploy our services. So I create Purrgil to make those scripts and help people to create your enviroments faster!
 
 ## Install
-> Todo...
+```
+curl https://raw.githubusercontent.com/purrgil/purrgil/master/install.sh | sh`
+```
 
 ## Commands
 Purrgil have some API, you can read about that using `purrgil --help`
@@ -58,8 +60,16 @@ purrgil packages
 ### Deploy
 > Todo...
 
-### Up
-> Todo...
+### Up / Down
+**Up** command activer docker-compose up passing some aditional parameter to garanted a secure instance of your containers, after that you can drop a project up with purrgil with **down** command :)
+
+```
+# Start the applicaiton
+purrgil up
+
+# Stop the application
+purrgil down
+```
 
 ## Contribution
 The purpose of this project was explained in first 2 sections, this repository are here to maintain the ideia and improve that! Contribution Guide and Code of Conduct are in todo list.

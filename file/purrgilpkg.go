@@ -1,7 +1,7 @@
 package file
 
 import (
-	"github.com/guidiego/purrgil/configs"
+	"github.com/purrgil/purrgil/configs"
 	"strings"
 )
 
