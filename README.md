@@ -23,7 +23,7 @@ In final of 2016 we start migrate some stuff of our enviroment to Docker in ente
 
 ## Install
 ```
-curl https://raw.githubusercontent.com/purrgil/purrgil/master/install.sh | sh`
+curl https://raw.githubusercontent.com/purrgil/purrgil/master/install.sh | sh
 ```
 
 ## Commands
