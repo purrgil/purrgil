@@ -1,6 +1,0 @@
-version: "2"
-services:
-  h2paas:
-    build: ./h2paas
-    volumes:
-    - ./h2paas:/app

@@ -24,7 +24,7 @@ func PackageInstall(pkg file.PurrgilPackage) {
 	ishell.PurrgilAlert("Installing " + pkg.Name + " package...")
 
 	if pkg.Provider == "github" {
-		GitClone(pkg.Identity)
+		GitClone(pkg.Identity, "")
 	} else {
 		DockerPull(pkg.Identity)
 	}
@@ -32,9 +32,9 @@ func PackageInstall(pkg file.PurrgilPackage) {
 	ishell.PurrgilAlert(pkg.Name + " was successfuly installed")
 }
 
-func GitClone(repo string) {
+func GitClone(repo string, folderName string) {
 	ssh := "git@github.com:" + repo + ".git"
-	cmd := exec.Command("git", "clone", ssh)
+	cmd := exec.Command("git", "clone", ssh, folderName)
 	err := cmd.Run()
 
 	if err != nil {

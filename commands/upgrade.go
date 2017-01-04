@@ -9,13 +9,14 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"log"
 
 	"github.com/google/go-github/github"
 )
 
 // Upgrade the current `version` of purrgil to the latest.
-func Upgrade(version string) error {
-	log.Infof("current release is v%s", version)
+func Upgrade() error {
+	log.Println("current release is v%s", PurrgilVersion)
 
 	// fetch releases
 	gh := github.NewClient(nil)
@@ -26,10 +27,10 @@ func Upgrade(version string) error {
 
 	// see if it's new
 	latest := releases[0]
-	log.Infof("latest release is %s", *latest.TagName)
+	log.Println("latest release is %s", *latest.TagName)
 
-	if (*latest.TagName)[1:] == version {
-		log.Infof("you're up to date :)")
+	if (*latest.TagName)[1:] == PurrgilVersion {
+		log.Println("you're up to date :)")
 		return nil
 	}
 
@@ -53,7 +54,7 @@ func Upgrade(version string) error {
 	}
 
 	// download binary
-	log.Infof("downloading %s", *asset.BrowserDownloadURL)
+	log.Println("downloading %s", *asset.BrowserDownloadURL)
 	res, err := http.Get(*asset.BrowserDownloadURL)
 	if err != nil {
 		return err
@@ -67,13 +68,13 @@ func Upgrade(version string) error {
 	}
 
 	// replace it
-	log.Infof("replacing %s", cmdPath)
+	log.Println("replacing %s", cmdPath)
 	err = os.Rename(tmpPath, cmdPath)
 	if err != nil {
 		return err
 	}
 
-	log.Infof("visit https://github.com/purrgil/purrgil/releases for the changelog")
+	log.Println("visit https://github.com/purrgil/purrgil/releases for the changelog")
 	return nil
 }
 

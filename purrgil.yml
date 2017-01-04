@@ -1,6 +1,0 @@
-name: ""
-packages:
-- name: h2paas
-  identity: iclinic/h2paas
-  provider: github
-  service: true

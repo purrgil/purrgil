@@ -26,5 +26,5 @@ _testmain.go
 *.prof
 
 purrgil_*
-
-h2paas
+docker-compose.yml
+purrgil.yml

@@ -7,13 +7,17 @@ import (
 	"github.com/purrgil/purrgil/interactiveshell"
 )
 
-func Init(projectName string) {
+func Init(projectName string, projectGithub string) {
 	wd, _ := os.Getwd()
 	wdpath := wd + "/" + projectName
 
 	ishell.PurrgilAlert("Init a new Purrgil App into: " + projectName)
 
-	os.Mkdir(projectName, 0777)
+	if (projectGithub == "") {
+		os.Mkdir(projectName, 0777)
+	} else {
+		GitClone(projectGithub, projectName)
+	}
 
 	dockercompose := file.NewDockerCompose(wdpath)
 	purrgil := file.NewPurrgil(wdpath, projectName)

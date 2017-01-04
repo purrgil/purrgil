@@ -15,6 +15,7 @@ var (
 	up = app.Command("up", "Mount your application")
 	down = app.Command("down", "Drop your application")
 	upgrade = app.Command("upgrade", "Update your Purrgil version")
+	version = app.Command("version", "Show purrgil version")
 
 	packages   = app.Command("packages", "List all installed container packages")
 	pkgGit     = packages.Flag("github", "Filter only GITHUB provider packages").Bool()
@@ -24,6 +25,7 @@ var (
 
 	initM = app.Command("init", "Init purrgil.yml")
 	pName = initM.Arg("project name", "Name of the purrgil project").String()
+	pRepo = initM.Flag("github", "github repository for your env").String()
 
 	deploy  = app.Command("deploy", "Make project deploy")
 	deployC = deploy.Flag("container", "Deploy a single container").String()
@@ -45,7 +47,7 @@ func main() {
 		commands.Install()
 
 	case initM.FullCommand():
-		commands.Init(*pName)
+		commands.Init(*pName, *pRepo)
 
 	case deploy.FullCommand():
 		commands.Deploy()
@@ -57,6 +59,9 @@ func main() {
 			CustomName: *addName,
 			ComposeConfig: *addDcConfig,
 		})
+
+	case version.FullCommand():
+		commands.Version()
 
 	case remove.FullCommand():
 		commands.Remove(*removeP)
