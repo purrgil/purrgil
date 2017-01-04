@@ -14,62 +14,68 @@
 - [Contribution](https://github.com/purrgil/purrgil#Contribution)
 
 ## About
-Purrgil is a simple wrapper for **Docker stuff** that help you to manage a **mult-container enviroment**. After read a little about Docker Orchestrators and projects that use Docker to manage your enviroments I noticed that some people have a single repository with a `docker-compose.yml` and an `init.sh` to make all project work aright and use **orchestrators** only to deploy your application.
+Purrgil is a simple wrapper for **Docker stuff** that helps manage a **multi-container environment**. After reading about Docker Orchestrators and projects that use Docker to manage their
+enviroments I noticed that some people had a single repository with a `docker-compose.yml` file and an `init.sh` file to launch the app and using **orchestrators** only for deploying.
 
-The ideia of Purrgil is help you construct this enviroment, help you to provide across your stages and the principal: Give you more flexibility and power to use docker in development enviroment!
+Purrgil's goal is to help you build and manage your environments, providing you flexibility and power in your development environment.
 
 ## Motivation
-In final of 2016 we start migrate some stuff of our enviroment to Docker in enterprise, talk n read about that we found some problems and nice ways to resolve that. At some talks we discuss about create some scripts to make our work easily while we develop and deploy our services. So I create Purrgil to make those scripts and help people to create your enviroments faster!
+By the end of 2016 we (at work) decided to add Docker to our development stack and while doing it we ran into some issues when managing the environments.
+We discussed about creating some scripts to make our work easy while we develop and deploy our services. So then Purrgil was born to help people get their environments up and running faster!
 
-## Install
+## Installation
 ```
 curl https://raw.githubusercontent.com/purrgil/purrgil/master/install.sh | sh
 ```
 
 ## Commands
-Purrgil have some API, you can read about that using `purrgil --help`
 
-### Init
-This command create a folder with project name and put a `docker-compose.yml`, `purrgil.yml` and `.gitignore` inside them.
+### init <project_name>
+`init` will create a folder with the project's name and put a `docker-compose.yml`, `purrgil.yml` and `.gitignore` inside it.
+
 ```
-purrgil init <projectName>
+purrgil init <project_name>
 ```
 
-### Install
-Install read `purrgil.yml` to understant your `packages` (dependencies) and download that inside your folder.
+### install
+`install` will read `purrgil.yml` file to map your `packages` (dependencies) and download them inside your project's folder.
+
 ```
 purrgil install
 ```
-### Add
-When you **add** a `package` in purrgil you need pass the identity of your package, in this case a **github** sign or a **dockerhub** image. Some example `guidiego/purrgil` or `node:6`, by default packages are setting with **github** as provider, but you can use `--dockerhub` to demonstrate that this service are a image. You can know more about using `purrgil add --help`
 
+### add
+`add` will do exactly what you expect: add a package. This can be a github's repo or a dockerhub's image. Example: `guidiego/purrgil` (github) or `node:6` (dockerhub).
+By the default purrgil will expect a github's repo, if you want to use a dockerhub's image you've to specify the flag `--dockerhub`.
 ```
-purrgil add <pkgIndentity> [<flag>]
-```
-### Remove
-Remove command in simple way do the reverse of ADD, remove the signs from `purrgil.yml`, `docker-compose.yml`, `.gitignore` and the project folder from project root.
-```
-purrgil remove <packageName>
+purrgil add <package> [flag]
 ```
 
-### Packages
-This command list the **name <- identity** from packages, and can be filter by flags, more about `purrgil packages --help`
+### remove
+`remove` will do exactly what you expected it would do. It will remove the package's signature from `purrgil.yml`, `docker-compose.yml`, `.gitignore` and the
+project folder from the root folder.
+
+```
+purrgil remove <package>
+```
+
+### packages
+`packages` will list all the packages
 ```
 purrgil packages
 ```
-### Deploy
-> Todo...
+### deploy
+> Not implemented yet.
 
-### Up / Down
-**Up** command activer docker-compose up passing some aditional parameter to garanted a secure instance of your containers, after that you can drop a project up with purrgil with **down** command :)
+### up
+`up` will safely build your containers and start your application
 
+### down
+`down` will safely stop your application
 ```
-# Start the applicaiton
-purrgil up
-
-# Stop the application
 purrgil down
 ```
 
-## Contribution
-The purpose of this project was explained in first 2 sections, this repository are here to maintain the ideia and improve that! Contribution Guide and Code of Conduct are in todo list.
+## Contributing
+This repository is here to keep the ideia of the project alive and to let other people contribute with the project.
+The Contribution Guide and Code of Conduct are both in my TODO list..
