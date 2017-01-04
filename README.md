@@ -1,17 +1,18 @@
 ![Imgur](http://i.imgur.com/ixH5L0K.png)
 
-- [About](https://github.com/purrgil/purrgil#About)
-- [Motivation](https://github.com/purrgil/purrgil#Motivation)
-- [Install](https://github.com/purrgil/purrgil#Install)
-- [Commands](https://github.com/purrgil/purrgil#Commands)
-  - Init
-  - Install
-  - Add
-  - Remove
-  - Packages
-  - ?Deploy
-  - ?Up
-- [Contribution](https://github.com/purrgil/purrgil#Contribution)
+- [About](https://github.com/purrgil/purrgil#about)
+- [Motivation](https://github.com/purrgil/purrgil#motivation)
+- [Installation](https://github.com/purrgil/purrgil#installation)
+- [Commands](https://github.com/purrgil/purrgil#commands)
+  - [init](https://github.com/purrgil/purrgil#init-)
+  - [install](https://github.com/purrgil/purrgil#install)
+  - [add](https://github.com/purrgil/purrgil#add)
+  - [remove](https://github.com/purrgil/purrgil#remove)
+  - [packages](https://github.com/purrgil/purrgil#packages)
+  - deploy
+  - [up](https://github.com/purrgil/purrgil#up)
+  - [down](https://github.com/purrgil/purrgil#down)
+- [Contributing](https://github.com/purrgil/purrgil#contributing)
 
 ## About
 Purrgil is a simple wrapper for **Docker stuff** that helps manage a **multi-container environment**. After reading about Docker Orchestrators and projects that use Docker to manage their
