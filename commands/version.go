@@ -1,6 +1,6 @@
 package commands
 
-const PurrgilVersion = "v0.1-beta-candidate"
+const PurrgilVersion = "v0.2.0-beta-candidate"
 
 func Version() {
 	println("version: " + PurrgilVersion)

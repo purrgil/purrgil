@@ -17,6 +17,9 @@ var (
 	upgrade = app.Command("upgrade", "Update your Purrgil version")
 	version = app.Command("version", "Show purrgil version")
 
+	push = app.Command("push", "commit/push a env update on git")
+	pushMsg = push.Arg("commit message", "your commit message").String()
+
 	packages   = app.Command("packages", "List all installed container packages")
 	pkgGit     = packages.Flag("github", "Filter only GITHUB provider packages").Bool()
 	pkgDock    = packages.Flag("dockerhub", "Filter only DOCKERHUB provider packages").Bool()
@@ -59,6 +62,9 @@ func main() {
 			CustomName: *addName,
 			ComposeConfig: *addDcConfig,
 		})
+
+	case push.FullCommand():
+		commands.Push(*pushMsg)
 
 	case version.FullCommand():
 		commands.Version()
