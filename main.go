@@ -14,6 +14,7 @@ var (
 	install = app.Command("install", "Install Purrgil Project")
 	up = app.Command("up", "Mount your application")
 	down = app.Command("down", "Drop your application")
+	upgrade = app.Command("upgrade", "Update your Purrgil version")
 
 	packages   = app.Command("packages", "List all installed container packages")
 	pkgGit     = packages.Flag("github", "Filter only GITHUB provider packages").Bool()
@@ -65,6 +66,9 @@ func main() {
 
 	case down.FullCommand():
 		commands.Down()
+
+	case upgrade.FullCommand():
+		commands.Upgrade()
 
 	case packages.FullCommand():
 		commands.PackageList(configs.CommandPackageConfig{
