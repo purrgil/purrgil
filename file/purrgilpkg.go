@@ -13,6 +13,14 @@ type PurrgilPackage struct {
 	SSH bool `yarml:"ssh"`
 }
 
+var PurrgilAvaibleFilters = []string {
+	"name",
+	"identity",
+	"provider",
+	"service",
+	"ssh",
+}
+
 func NewPurrgilPackage(id string, opts configs.AddConfig) PurrgilPackage {
 	pkg := PurrgilPackage{}
 
