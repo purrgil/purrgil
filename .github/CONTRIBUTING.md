@@ -26,8 +26,8 @@ Purrgil follows [semantic versioning](http://semver.org/). We release patch vers
 
 We are using [GitHub Issues](https://github.com/purrgil/purrgil/issues) for our public bugs. We keep a close eye on this and try to make it clear when we have an internal fix in progress. Before filing a new task, try to make sure your problem doesn't already exist.
 
-#### Dicussions
-If you want to init a dicussion about something releated with Purrgil, create issue with `[FORUM]` in start of the title! We have some forums opened by core team :)
+#### Discussions
+If you want to init a discussion about something releated with Purrgil, create an issue with `[FORUM]` in start of the title! We have some forums opened by core team :)
 
 ### Sending a Pull Request
 

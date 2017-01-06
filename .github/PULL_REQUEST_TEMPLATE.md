@@ -2,7 +2,7 @@
 > If your PR are releated with some issue please use [resolve command](https://github.com/blog/1506-closing-issues-via-pull-requests) in this section! ex:
 > `this resolve #1`
 
-### Decription
+### Description
 > A short description for what you made
 
 ### Changelog (not mandatory but enconraged)
