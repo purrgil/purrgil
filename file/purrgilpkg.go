@@ -10,6 +10,7 @@ type PurrgilPackage struct {
 	Identity string `yaml:"identity"`
 	Provider string `yaml:"provider"`
 	Service  bool   `yaml:"service"`
+	SSH bool `yarml:"ssh"`
 }
 
 func NewPurrgilPackage(id string, opts configs.AddConfig) PurrgilPackage {
@@ -17,8 +18,9 @@ func NewPurrgilPackage(id string, opts configs.AddConfig) PurrgilPackage {
 
 	pkg.Identity = id
 	pkg.Name = normalizeName(id, opts.CustomName)
-	pkg.Provider = getProvider(opts.Dockerhub)
+	pkg.Provider = getProvider(opts.Provider)
 	pkg.Service = !opts.IsService
+	pkg.SSH = !opts.HttpsMode
 
 	return pkg
 }
@@ -38,10 +40,10 @@ func normalizeName(id string, custom string) string {
 	return id
 }
 
-func getProvider(isDockerhub bool) string {
-	if isDockerhub {
-		return "dockerhub"
+func getProvider(provider string) string {
+	if provider == "" {
+		return "github"
 	}
 
-	return "github"
+	return provider
 }

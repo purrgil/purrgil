@@ -4,19 +4,25 @@ import (
 	"os"
 
 	"github.com/purrgil/purrgil/file"
+	"github.com/purrgil/purrgil/configs"
 	"github.com/purrgil/purrgil/interactiveshell"
 )
 
-func Init(projectName string, projectGithub string) {
+func Init(projectName string, opts configs.InitConfig) {
 	wd, _ := os.Getwd()
 	wdpath := wd + "/" + projectName
 
 	ishell.PurrgilAlert("Init a new Purrgil App into: " + projectName)
 
-	if (projectGithub == "") {
+	if (opts.Provider == "") {
 		os.Mkdir(projectName, 0777)
 	} else {
-		GitClone(projectGithub, projectName)
+		RunDownloadFromProvider(file.PurrgilPackage{
+			Identity: opts.Repo,
+			Name: projectName,
+			SSH: opts.IsSSH,
+			Provider: opts.Provider,
+		})
 	}
 
 	dockercompose := file.NewDockerCompose(wdpath)

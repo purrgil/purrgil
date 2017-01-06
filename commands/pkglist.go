@@ -15,17 +15,17 @@ func PackageList(opts configs.CommandPackageConfig) {
 
 	ishell.PurrgilAlert("Listing packages from " + purrgilconfig.Name + "...")
 
-	if opts.IsGithub && !opts.IsDockerhub {
-		mypackages = file.PurrgilGetPackages(mypackages, filterGithub)
-	} else if !opts.IsGithub && opts.IsDockerhub {
-		mypackages = file.PurrgilGetPackages(mypackages, filterDockerhub)
-	}
+	// if opts.IsGithub && !opts.IsDockerhub {
+	// 	mypackages = file.PurrgilGetPackages(mypackages, filterGithub)
+	// } else if !opts.IsGithub && opts.IsDockerhub {
+	// 	mypackages = file.PurrgilGetPackages(mypackages, filterDockerhub)
+	// }
 
-	if opts.IsService && !opts.IsNormal {
-		mypackages = file.PurrgilGetPackages(mypackages, filterService)
-	} else if !opts.IsService && opts.IsNormal {
-		mypackages = file.PurrgilGetPackages(mypackages, filterNonservice)
-	}
+	// if opts.IsService && !opts.IsNormal {
+	// 	mypackages = file.PurrgilGetPackages(mypackages, filterService)
+	// } else if !opts.IsService && opts.IsNormal {
+	// 	mypackages = file.PurrgilGetPackages(mypackages, filterNonservice)
+	// }
 
 	if len(mypackages) == 0 {
 		ishell.PurrgilAlert("Not found packages from this filters :(")
