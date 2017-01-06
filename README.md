@@ -1,82 +1,40 @@
 ![Imgur](http://i.imgur.com/ixH5L0K.png)
 
-- [About](https://github.com/purrgil/purrgil#about)
-- [Motivation](https://github.com/purrgil/purrgil#motivation)
-- [Installation](https://github.com/purrgil/purrgil#installation)
-- [Commands](https://github.com/purrgil/purrgil#commands)
-  - [init](https://github.com/purrgil/purrgil#init-)
-  - [install](https://github.com/purrgil/purrgil#install)
-  - [add](https://github.com/purrgil/purrgil#add)
-  - [remove](https://github.com/purrgil/purrgil#remove)
-  - [packages](https://github.com/purrgil/purrgil#packages)
-  - deploy
-  - [up](https://github.com/purrgil/purrgil#up)
-  - [down](https://github.com/purrgil/purrgil#down)
-- [Contributing](https://github.com/purrgil/purrgil#contributing)
-
-## About
 Purrgil is a simple wrapper for **Docker stuff** that helps manage a **multi-container environment**. After reading about Docker Orchestrators and projects that use Docker to manage their
 enviroments I noticed that some people had a single repository with a `docker-compose.yml` file and an `init.sh` file to launch the app and using **orchestrators** only for deploying.
 
 Purrgil's goal is to help you build and manage your environments, providing you flexibility and power in your development environment.
 
-## Motivation
-By the end of 2016 we (at work) decided to add Docker to our development stack and while doing it we ran into some issues when managing the environments.
-We discussed about creating some scripts to make our work easy while we develop and deploy our services. So then Purrgil was born to help people get their environments up and running faster!
-
-## Installation
+## Install
+For developers that want to contribute, you can install with `go` manage:
 ```
-curl https://raw.githubusercontent.com/purrgil/purrgil/master/install.sh | sh
+go get github.com/purrgil/purrgil
 ```
 
-## Commands
-
-### init <project_name>
-`init` will create a folder with the project's name and put a `docker-compose.yml`, `purrgil.yml` and `.gitignore` inside it.
+For soft users on macOS, Linux, or OpenBSD run the following:
 
 ```
-purrgil init <project_name>
+curl https://raw.githubusercontent.com/apex/apex/master/install.sh | sh
 ```
 
-### install
-`install` will read `purrgil.yml` file to map your `packages` (dependencies) and download them inside your project's folder.
+Note that you may need to run the sudo version below, or alternatively chown /usr/local:
 
 ```
-purrgil install
+curl https://raw.githubusercontent.com/apex/apex/master/install.sh | sudo sh
 ```
 
-### add
-`add` will do exactly what you expect: add a package. This can be a github's repo or a dockerhub's image. Example: `guidiego/purrgil` (github) or `node:6` (dockerhub).
-By the default purrgil will expect a github's repo, if you want to use a dockerhub's image you've to specify the flag `--dockerhub`.
-```
-purrgil add <package> [flag]
-```
+## Documentation
+We have a little documentation here: https://purrgil.github.io/docs/, if you want to contribute in this we are using gitbook, and the source is [here](). Any sugestions you can open a issue on the site repo!
 
-### remove
-`remove` will do exactly what you expected it would do. It will remove the package's signature from `purrgil.yml`, `docker-compose.yml`, `.gitignore` and the
-project folder from the root folder.
+## Code of Conduct
 
-```
-purrgil remove <package>
-```
+We has adopted a Code of Conduct that we expect project participants to adhere to. Please read [the full text](https://github.com/purrgil/purrgil/tree/master/.github/CODE_OF_CONDUCT.md) so that you can understand what actions will and will not be tolerated.
 
-### packages
-`packages` will list all the packages
-```
-purrgil packages
-```
-### deploy
-> Not implemented yet.
+## Contribuition Guide
+If you want to contribute, first read our guide! We based on [react]() one: [Purrgil Guide](https://github.com/purrgil/purrgil/tree/master/.github/CONTRIBUTING.md)
 
-### up
-`up` will safely build your containers and start your application
+## License
 
-### down
-`down` will safely stop your application
-```
-purrgil down
-```
+By contributing to Purrgil, you agree that your contributions will be licensed under its MIT license.
 
-## Contributing
-This repository is here to keep the ideia of the project alive and to let other people contribute with the project.
-The Contribution Guide and Code of Conduct are both in my TODO list..
+
