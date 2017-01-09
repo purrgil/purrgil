@@ -1,4 +1,4 @@
-![Imgur](http://i.imgur.com/ixH5L0K.png)
+![Imgur](https://purrgil.github.io/static/images/full_logo.svg)
 
 Purrgil is a simple wrapper for **Docker stuff** that helps manage a **multi-container environment**. After reading about Docker Orchestrators and projects that use Docker to manage their
 enviroments I noticed that some people had a single repository with a `docker-compose.yml` file and an `init.sh` file to launch the app and using **orchestrators** only for deploying.
