@@ -13,6 +13,7 @@ type DockerComposeService struct {
 	Ports     []string `yaml:"ports,omitempty"`
 	Volumes   []string `yaml:"volumes,omitempty"`
 	DependsOn []string `yaml:"depends_on,omitempty"`
+	Links []string `yaml:"links,omitempty"`
 }
 
 func (d *DockerComposeFile) AddService(key string, dcs DockerComposeService) {
