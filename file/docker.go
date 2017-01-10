@@ -1,9 +1,12 @@
 package file
 
+import "strings"
+
 type DockerComposeFile struct {
 	yaml     Yaml
 	Version  string                          `yaml:"version,omitempty"`
 	Services map[string]DockerComposeService `yaml:"services,omitempty"`
+	Volumes []string `yarm:"volumes,omitempty"`
 }
 
 type DockerComposeService struct {
@@ -22,6 +25,27 @@ func (d *DockerComposeFile) AddService(key string, dcs DockerComposeService) {
 	}
 
 	d.Services[key] = dcs
+}
+
+func (d *DockerComposeFile) GetNamedVolumes() map[string]string {
+	mappedValues := make(map[string]string)
+
+	for _, value := range d.Volumes {
+		volumeSplited := strings.Split(value, ":")
+		mappedValues[volumeSplited[0]] = volumeSplited[1]
+	}
+
+	return mappedValues
+}
+
+func (d *DockerComposeFile) HasVolume(name string) bool {
+	for key, _ := range d.GetNamedVolumes() {
+		if key == name {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (d *DockerComposeFile) LinkInService(volumeName string, services []string) {

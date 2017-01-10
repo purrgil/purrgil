@@ -5,7 +5,7 @@ import (
 	"github.com/purrgil/purrgil/file"
 )
 
-func CollectDockerServiceInfo(pkg file.PurrgilPackage) (string, file.DockerComposeService) {
+func CollectDockerServiceInfo(pkg file.PurrgilPackage, dc file.DockerComposeFile) (string, file.DockerComposeService) {
 	var dcs = file.DockerComposeService{}
 	var serviceName =  termput.Input(termput.InputConfig{
 		DefaultValue: pkg.Name,
@@ -34,7 +34,11 @@ func CollectDockerServiceInfo(pkg file.PurrgilPackage) (string, file.DockerCompo
 
 	if pkg.Provider == "github" {
 		dcs.Build = "./" + pkg.Name + ""
-		dcs.Volumes = append(dcs.Volumes, "./"+pkg.Name+":/app")
+		dcs.Volumes = append(dcs.Volumes, pkg.Name + ":/app")
+
+		if !dc.HasVolume(pkg.Name) {
+			dc.Volumes = append(dc.Volumes, pkg.Name + ":./" + pkg.Name)
+		}
 	} else {
 		dcs.Image = pkg.Identity
 	}
