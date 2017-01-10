@@ -4,9 +4,10 @@ import (
 	"github.com/purrgil/purrgil/file"
 	"github.com/purrgil/purrgil/interactiveshell"
 	"os/exec"
-
+	"fmt"
 	"os"
 	"errors"
+	"strings"
 )
 
 func Up() {
@@ -27,6 +28,7 @@ func Up() {
 	}
 
 	purrgilconfig := file.NewPurrgil(path, "")
+	dc := file.NewDockerCompose(path)
 
 	if purrgilconfig.Name == "" {
 		err := "Please enter with a name for your purrgil application!"
@@ -39,15 +41,35 @@ func Up() {
 
 	ishell.PurrgilAlert("Starting your application, this may take some time :) ....")
 
-	cmd := exec.Command("docker-compose", "-p", purrgilconfig.Name , "up", "--no-recreate", "-d")
-	err := cmd.Run()
+	mappedVolumes := dc.GetNamedVolumes()
 
-	if err != nil {
-		ishell.Err("Docker compose fail in Up your application", err)
+	for serviceName, serviceData := range dc.Services {
+		for _, vol := range serviceData.Volumes {
+			volName := strings.Split(vol, ":")
+			volPath := strings.Replace(mappedVolumes[volName[0]], "./", "", 1)
+			moveToDeps(volName[0], path + "/" + volPath, path + "/" + serviceName)
+		}
 	}
 
-	ishell.PurrgilAlert("Your application are running!")
+	composeCmd := exec.Command("docker-compose", "up", "--no-recreate", "-d")
+	composeErr := composeCmd.Run()
 
+	if composeErr != nil {
+		ishell.Err("Problem with compose", composeErr)
+	}
+
+}
+
+func moveToDeps(volName string, volPath string, serviceName string) {
+	depsPath := serviceName + "/.deps/"
+
+	fmt.Println("cp", "-rv", volPath, depsPath)
+	copyFile := exec.Command("cp", "-rv", volPath, depsPath)
+	err := copyFile.Run()
+
+	if err != nil {
+		ishell.Err("Problem in copy files", err)
+	}
 }
 
 func packageVerify(path string, pkg file.PurrgilPackage) {

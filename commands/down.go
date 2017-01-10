@@ -14,16 +14,18 @@ func Down() {
 	path, _ := os.Getwd()
 	purrgilconfig := file.NewPurrgil(path, "")
 
-	filter := "name=" + purrgilconfig.Name + "_"
-	stdout, _ := exec.Command("docker", "ps", "--filter", filter, "-q").Output()
-	containers := strings.Split(string(stdout), "\n")
-	command := append([]string{"kill"}, containers...)
+	composeDown := exec.Command("docker-compose", "down")
+	composeErr := composeDown.Run()
 
-	cmd := exec.Command("docker", command...)
-	err := cmd.Run()
+	if composeErr != nil {
+		ishell.Err("Docker fail in kill containers", composeErr)
+	}
 
-	if err != nil {
-		ishell.Err("Docker fail in kill containers", err)
+	rmDeps := exec.Command("rm", "-rf", "./*/.deps")
+	rmErr := rmDeps.Run()
+
+	if rmErr != nil {
+		ishell.Err("Docker fail in kill containers", rmErr)
 	}
 
 	ishell.PurrgilAlert("Your application goes down! To start again: 'purrgil up'")

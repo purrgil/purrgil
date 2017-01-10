@@ -37,7 +37,7 @@ func Add(pkgId string, opts configs.AddConfig) {
 
 func callComposeConfigInterface(pkg file.PurrgilPackage, dc *file.DockerComposeFile) {
 	if pkg.Service {
-		serviceName, service := ishell.CollectDockerServiceInfo(pkg)
+		serviceName, service := ishell.CollectDockerServiceInfo(pkg, *dc)
 		dc.AddService(serviceName, service)
 	} else {
 		packages := ishell.CollectLinkPossibility(pkg)
