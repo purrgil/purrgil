@@ -14,13 +14,13 @@ go get github.com/purrgil/purrgil
 For soft users on macOS, Linux, or OpenBSD run the following:
 
 ```
-curl https://raw.githubusercontent.com/apex/apex/master/install.sh | sh
+curl https://raw.githubusercontent.com/purrgil/purrgil/master/install.sh | sh
 ```
 
 Note that you may need to run the sudo version below, or alternatively chown /usr/local:
 
 ```
-curl https://raw.githubusercontent.com/apex/apex/master/install.sh | sudo sh
+curl https://raw.githubusercontent.com/purrgil/purrgil/master/install.sh | sudo sh
 ```
 
 ## Documentation
