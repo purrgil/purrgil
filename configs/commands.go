@@ -2,14 +2,18 @@ package configs
 
 type AddConfig struct {
 	IsService  bool
-	Dockerhub  bool
+	Provider  string
+	HttpsMode bool
 	CustomName string
 	ComposeConfig bool
 }
 
 type CommandPackageConfig struct {
-	IsGithub    bool
-	IsDockerhub bool
-	IsService   bool
-	IsNormal    bool
+	FilterSettings map[string]string
+}
+
+type InitConfig struct {
+	IsSSH  bool
+	Repo  string
+	Provider string
 }

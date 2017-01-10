@@ -2,10 +2,13 @@ package commands
 
 import (
 	"fmt"
+	"regexp"
+	"errors"
+	"os"
+	"strconv"
 	"github.com/purrgil/purrgil/configs"
 	"github.com/purrgil/purrgil/file"
 	"github.com/purrgil/purrgil/interactiveshell"
-	"os"
 )
 
 func PackageList(opts configs.CommandPackageConfig) {
@@ -15,16 +18,34 @@ func PackageList(opts configs.CommandPackageConfig) {
 
 	ishell.PurrgilAlert("Listing packages from " + purrgilconfig.Name + "...")
 
-	if opts.IsGithub && !opts.IsDockerhub {
-		mypackages = file.PurrgilGetPackages(mypackages, filterGithub)
-	} else if !opts.IsGithub && opts.IsDockerhub {
-		mypackages = file.PurrgilGetPackages(mypackages, filterDockerhub)
-	}
+	for k, v := range opts.FilterSettings {
+		if hasKey(file.PurrgilAvaibleFilters, k) {
+			mypackages = file.PurrgilGetPackages(mypackages, func(pkg file.PurrgilPackage) bool {
+				var val string
 
-	if opts.IsService && !opts.IsNormal {
-		mypackages = file.PurrgilGetPackages(mypackages, filterService)
-	} else if !opts.IsService && opts.IsNormal {
-		mypackages = file.PurrgilGetPackages(mypackages, filterNonservice)
+				switch k {
+				case "name":
+					val = pkg.Name
+				case "identity":
+					val = pkg.Identity
+				case "service":
+					val = strconv.FormatBool(pkg.Service)
+				case "ssh":
+					val = strconv.FormatBool(pkg.SSH)
+				case "provider":
+					val = pkg.Provider
+				}
+
+				m, err := regexp.MatchString(v, val)
+
+				if err != nil {
+					regError := "Error in regex"
+					ishell.Err(regError, errors.New(regError))
+				}
+
+				return m
+			})
+		}
 	}
 
 	if len(mypackages) == 0 {
@@ -32,30 +53,25 @@ func PackageList(opts configs.CommandPackageConfig) {
 	}
 
 	for _, value := range mypackages {
-		fmt.Printf("  - %s <- %s \n", value.Name, value.Identity)
+		var template string
+
+		if value.Provider != "dockerhub" {
+			template = "Package: %s into [./%s] from %s  \n"
+		} else {
+			template = "Package: %s image named as %s on %s \n"
+		}
+
+		formatedString := fmt.Sprintf(template, value.Identity, value.Name, value.Provider)
+		ishell.PurrgilAlert(formatedString)
 	}
 }
 
-func filterGithub(pkg file.PurrgilPackage) bool {
-	if pkg.Provider == "github" {
-		return true
+func hasKey(list []string, k string) bool {
+	for _, v := range list {
+		if v == k {
+			return true
+		}
 	}
 
 	return false
-}
-
-func filterService(pkg file.PurrgilPackage) bool {
-	if pkg.Service {
-		return true
-	}
-
-	return false
-}
-
-func filterDockerhub(pkg file.PurrgilPackage) bool {
-	return !filterGithub(pkg)
-}
-
-func filterNonservice(pkg file.PurrgilPackage) bool {
-	return !filterService(pkg)
 }

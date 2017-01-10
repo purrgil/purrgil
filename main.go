@@ -9,6 +9,7 @@ import (
 )
 
 var (
+	avaibleProviders = []string{"github", "bitbucket", "dockerhub", "bitbucket_mcr"}
 	app = kingpin.New("purrgil", "Bleh")
 
 	install = app.Command("install", "Install Purrgil Project")
@@ -21,26 +22,26 @@ var (
 	pushMsg = push.Arg("commit message", "your commit message").String()
 
 	packages   = app.Command("packages", "List all installed container packages")
-	pkgGit     = packages.Flag("github", "Filter only GITHUB provider packages").Bool()
-	pkgDock    = packages.Flag("dockerhub", "Filter only DOCKERHUB provider packages").Bool()
-	pkgService = packages.Flag("services", "Filter only SERVICES packages").Bool()
-	pkgNormal  = packages.Flag("non-service", "Filter only NON SERVICE packages").Bool()
+	packageFilter = packages.Flag("filter", "filter packages by attributes").Short('f').StringMap()
 
-	initM = app.Command("init", "Init purrgil.yml")
-	pName = initM.Arg("project name", "Name of the purrgil project").String()
-	pRepo = initM.Flag("github", "github repository for your env").String()
+	initCommand = app.Command("init", "Init purrgil.yml")
+	initProjectName = initCommand.Arg("project name", "Name of the purrgil project").String()
+	initProjectProvider = initCommand.Flag("provider", "select a provider to your project").Short('p').Enum(avaibleProviders...)
+	initProjectRepo = initCommand.Flag("repository", "the repository to be downloaded in your provider").Short('r').String()
+	initProjectHttps = initCommand.Flag("https", "you can use that if want https protocol to download").Bool()
 
 	deploy  = app.Command("deploy", "Make project deploy")
 	deployC = deploy.Flag("container", "Deploy a single container").String()
 
 	add     = app.Command("add", "Add a dependency to project")
-	addS    = add.Arg("pkg", "Add a service").String()
-	addNs   = add.Flag("not-a-service", "Add only a git repository").Bool()
-	addDk   = add.Flag("dockerhub", "Install image directly from dockerhub").Bool()
+	addPkgIdentity = add.Arg("pkg", "Add a service").String()
+	addServiceFlag  = add.Flag("not-a-service", "Add only a git repository").Bool()
+	addProvider   = add.Flag("provider", "Install image directly from dockerhub").Enum(avaibleProviders...)
 	addName = add.Flag("name", "Give a custom name to package").String()
-	addDcConfig  = add.Flag("compose-helper", "Active an interface to inject basic compose infos").Bool()
+	addHTTPS = add.Flag("https", "download package in https mode").Bool()
+	addComposeConfig  = add.Flag("compose-helper", "Active an interface to inject basic compose infos").Bool()
 
-	remove  = app.Command("rm", "Remove a dependency to project")
+	remove  = app.Command("remove", "Remove a dependency to project")
 	removeP = remove.Arg("package", "Name of Purrgil Package to Remove").String()
 )
 
@@ -49,18 +50,23 @@ func main() {
 	case install.FullCommand():
 		commands.Install()
 
-	case initM.FullCommand():
-		commands.Init(*pName, *pRepo)
+	case initCommand.FullCommand():
+		commands.Init(*initProjectName, configs.InitConfig{
+			Repo: *initProjectProvider,
+			IsSSH: !*initProjectHttps,
+			Provider: *initProjectRepo,
+		})
 
 	case deploy.FullCommand():
 		commands.Deploy()
 
 	case add.FullCommand():
-		commands.Add(*addS, configs.AddConfig{
-			IsService:  *addNs,
-			Dockerhub:  *addDk,
+		commands.Add(*addPkgIdentity, configs.AddConfig{
+			IsService:  *addServiceFlag,
+			Provider:  *addProvider,
 			CustomName: *addName,
-			ComposeConfig: *addDcConfig,
+			ComposeConfig: *addComposeConfig,
+			HttpsMode: *addHTTPS,
 		})
 
 	case push.FullCommand():
@@ -83,10 +89,7 @@ func main() {
 
 	case packages.FullCommand():
 		commands.PackageList(configs.CommandPackageConfig{
-			IsGithub:    *pkgGit,
-			IsDockerhub: *pkgDock,
-			IsService:   *pkgService,
-			IsNormal:    *pkgNormal,
+			FilterSettings: *packageFilter,
 		})
 	}
 }
