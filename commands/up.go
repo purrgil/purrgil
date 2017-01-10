@@ -58,6 +58,19 @@ func Up() {
 		ishell.Err("Problem with compose", composeErr)
 	}
 
+	for _, pkg := range purrgilconfig.Packages {
+		for _, command := range pkg.DevCommands {
+			composeExecCommand := exec.Command("docker-compose", "exec", pkg.Name, command)
+			composeExecErr := composeExecCommand.Run()
+
+			if composeExecErr != nil {
+				ishell.Err("Problem with compose", composeExecErr)
+			}
+		}
+	}
+
+	ishell.PurrgilAlert("Your application are online!")
+
 }
 
 func moveToDeps(volName string, volPath string, serviceName string) {

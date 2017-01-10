@@ -10,7 +10,8 @@ type PurrgilPackage struct {
 	Identity string `yaml:"identity"`
 	Provider string `yaml:"provider"`
 	Service  bool   `yaml:"service"`
-	SSH bool `yarml:"ssh"`
+	SSH bool `yaml:"ssh"`
+	DevCommands []string `yaml:"dev_commands,omitempty"`
 }
 
 var PurrgilAvaibleFilters = []string {

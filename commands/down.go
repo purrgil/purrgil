@@ -1,18 +1,12 @@
 package commands
 
 import (
-	"github.com/purrgil/purrgil/file"
 	"github.com/purrgil/purrgil/interactiveshell"
 	"os/exec"
-	"strings"
-	"os"
 )
 
 func Down() {
 	ishell.PurrgilAlert("Starting to drop containers....")
-
-	path, _ := os.Getwd()
-	purrgilconfig := file.NewPurrgil(path, "")
 
 	composeDown := exec.Command("docker-compose", "down")
 	composeErr := composeDown.Run()
