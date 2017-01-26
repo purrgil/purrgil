@@ -13,10 +13,12 @@ var (
 	app = kingpin.New("purrgil", "Bleh")
 
 	install = app.Command("install", "Install Purrgil Project")
-	up = app.Command("up", "Mount your application")
 	down = app.Command("down", "Drop your application")
 	upgrade = app.Command("upgrade", "Update your Purrgil version")
 	version = app.Command("version", "Show purrgil version")
+
+	up = app.Command("up", "Mount your application")
+	upNoCache = up.Flag("no-cache", "remove deeps when run up").Bool()
 
 	push = app.Command("push", "commit/push a env update on git")
 	pushMsg = push.Arg("commit message", "your commit message").String()
@@ -79,7 +81,9 @@ func main() {
 		commands.Remove(*removeP)
 
 	case up.FullCommand():
-		commands.Up()
+		commands.Up(configs.UpConfig{
+			NoCache: *upNoCache,
+		})
 
 	case down.FullCommand():
 		commands.Down()

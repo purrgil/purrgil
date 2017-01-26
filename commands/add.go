@@ -17,7 +17,7 @@ func Add(pkgId string, opts configs.AddConfig) {
 	gitignore := file.NewGitIgnore(path)
 	purrgilNewPackage := file.NewPurrgilPackage(pkgId, opts)
 
-	PackageInstall(purrgilNewPackage)
+	PackageInstall(path, purrgilNewPackage)
 
 	purrgilconfig.AddPackage(purrgilNewPackage)
 	gitignore.AddIgnoredPath(purrgilNewPackage.Name)
@@ -37,7 +37,7 @@ func Add(pkgId string, opts configs.AddConfig) {
 
 func callComposeConfigInterface(pkg file.PurrgilPackage, dc *file.DockerComposeFile) {
 	if pkg.Service {
-		serviceName, service := ishell.CollectDockerServiceInfo(pkg, *dc)
+		serviceName, service := ishell.CollectDockerServiceInfo(pkg)
 		dc.AddService(serviceName, service)
 	} else {
 		packages := ishell.CollectLinkPossibility(pkg)

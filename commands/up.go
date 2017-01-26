@@ -3,6 +3,7 @@ package commands
 import (
 	"github.com/purrgil/purrgil/file"
 	"github.com/purrgil/purrgil/interactiveshell"
+	"github.com/purrgil/purrgil/configs"
 	"os/exec"
 	"fmt"
 	"os"
@@ -10,7 +11,7 @@ import (
 	"strings"
 )
 
-func Up() {
+func Up(opts configs.UpConfig) {
 	ishell.PurrgilAlert("Reading informations....")
 
 	path, _ := os.Getwd()
@@ -39,18 +40,26 @@ func Up() {
 		packageVerify(path, value)
 	}
 
-	ishell.PurrgilAlert("Starting your application, this may take some time :) ....")
+	if opts.NoCache {
+		removeDeps := exec.Command("rm", "-rf", "./*/.deps")
+		rmDepErr := removeDeps.Run()
 
-	mappedVolumes := dc.GetNamedVolumes()
+		if rmDepErr != nil {
+			ishell.Err("Problems in remove deps", rmDepErr)
+		}
+	}
 
 	for serviceName, serviceData := range dc.Services {
 		for _, vol := range serviceData.Volumes {
 			volName := strings.Split(vol, ":")
-			volPath := strings.Replace(mappedVolumes[volName[0]], "./", "", 1)
-			moveToDeps(volName[0], path + "/" + volPath, path + "/" + serviceName)
+
+			if checkDep(volName[0], serviceName) {
+				moveToDeps(volName[0], serviceName)
+			}
 		}
 	}
 
+	ishell.PurrgilAlert("Starting your application, this may take some time :) ....")
 	composeCmd := exec.Command("docker-compose", "up", "--no-recreate", "-d")
 	composeErr := composeCmd.Run()
 
@@ -59,12 +68,17 @@ func Up() {
 	}
 
 	for _, pkg := range purrgilconfig.Packages {
-		for _, command := range pkg.DevCommands {
-			composeExecCommand := exec.Command("docker-compose", "exec", pkg.Name, command)
-			composeExecErr := composeExecCommand.Run()
+		for _, command := range pkg.PostRunCommands {
+			ishell.PurrgilAlert(fmt.Sprintf("%s || running '%s'", pkg.Name, command))
 
-			if composeExecErr != nil {
-				ishell.Err("Problem with compose", composeExecErr)
+			command = "\"" + command + "\""
+			commands := []string{ "exec", pkg.Name, "su", "root", "-c", command}
+			value, err  := exec.Command("docker-compose", commands...).Output()
+
+			if err != nil {
+				ishell.Err(pkg.Name + " || " + string(value), err)
+			} else {
+				ishell.PurrgilAlert(pkg.Name + " || " + string(value))
 			}
 		}
 	}
@@ -73,10 +87,11 @@ func Up() {
 
 }
 
-func moveToDeps(volName string, volPath string, serviceName string) {
-	depsPath := serviceName + "/.deps/"
+func moveToDeps(volPath string, serviceName string) {
+	depsPath := fmt.Sprintf("./%s/.deps/", serviceName)
 
-	fmt.Println("cp", "-rv", volPath, depsPath)
+	ishell.PurrgilAlert(fmt.Sprintf("Add Dep: %s -> %s", volPath, depsPath))
+
 	copyFile := exec.Command("cp", "-rv", volPath, depsPath)
 	err := copyFile.Run()
 
@@ -90,6 +105,12 @@ func packageVerify(path string, pkg file.PurrgilPackage) {
 		err := "We not found package: [" + pkg.Name + "], try a 'purrgil install'"
 		ishell.Err(err, errors.New(err))
 	}
+}
+
+func checkDep(name string, serviceName string) bool {
+	servicePath := "./" + serviceName
+	depsPath := servicePath + "/.deps/" + name
+	return name != servicePath && exists(servicePath) && !exists(depsPath)
 }
 
 

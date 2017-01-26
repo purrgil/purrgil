@@ -38,15 +38,36 @@ func Install() {
 	purrgil := file.NewPurrgil(wdpath, "")
 
 	for _, pkg := range purrgil.Packages {
-		PackageInstall(pkg)
+		PackageInstall(wdpath, pkg)
 	}
 
 }
 
-func PackageInstall(pkg file.PurrgilPackage) {
+func PackageInstall(wd string, pkg file.PurrgilPackage) {
 	ishell.PurrgilAlert("Installing " + pkg.Name + " package...")
 
 	RunDownloadFromProvider(pkg)
+
+	chdirErr := os.Chdir(pkg.Name)
+
+	if chdirErr != nil {
+		ishell.Err("Problem with the folder", chdirErr)
+	}
+
+	for _, fullCmd := range pkg.PostInstallCommands {
+		splited := strings.Split(fullCmd, " ")
+		cmd := splited[0]
+		args := splited[1:len(splited)]
+
+		postinstallcmd := exec.Command(cmd, args...)
+		err := postinstallcmd.Run()
+
+		if err != nil {
+			ishell.Err("Error in " + pkg.Name + " post install scripts", err)
+		}
+	}
+
+	os.Chdir(wd)
 
 	ishell.PurrgilAlert(pkg.Name + " was successfuly installed")
 }
@@ -76,7 +97,6 @@ func GithubClone(pkg file.PurrgilPackage, kind ProviderMap) {
 		template = fmt.Sprintf(kind.ssh, pkg.Identity)
 	}
 
-	println(template)
 	RepoClone("git", template, pkg.Name)
 }
 
@@ -104,7 +124,7 @@ func RepoClone(providerCmd string, repo string, folderName string) {
 	err := cmd.Run()
 
 	if err != nil {
-		ishell.Err("Somethings goes, confeer the identity of your package", err)
+		ishell.Err("Somethings goes, confeer the identity of your " + folderName + " package", err)
 	}
 }
 
