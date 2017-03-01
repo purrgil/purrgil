@@ -30,7 +30,7 @@ func Upgrade() error {
 	latest := releases[0]
 	log.Println("latest release is %s", *latest.TagName)
 
-	if (*latest.TagName)[1:] == PurrgilVersion {
+	if *latest.TagName == PurrgilVersion {
 		log.Println("you're up to date :)")
 		return nil
 	}
