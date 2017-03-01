@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"log"
+	"context"
 
 	"github.com/google/go-github/github"
 )
@@ -20,7 +21,7 @@ func Upgrade() error {
 
 	// fetch releases
 	gh := github.NewClient(nil)
-	releases, _, err := gh.Repositories.ListReleases("purrgil", "purrgil", nil)
+	releases, _, err := gh.Repositories.ListReleases(context.TODO(), "purrgil", "purrgil", nil)
 	if err != nil {
 		return err
 	}
