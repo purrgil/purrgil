@@ -2,8 +2,8 @@ package provider
 
 import (
 	"os/exec"
-	"github.com/op/go-logging"
 
+	"github.com/op/go-logging"
 	msg "github.com/purrgil/purrgil/log/message"
 )
 
@@ -25,17 +25,17 @@ type GitCloneConfig struct {
 func (gp *GitProvider) Clone(config GitCloneConfig) {
 	cloneURI := getCloneURI(config)
 
-	glog.Infof(msg.START_CLONE, config.User, config.Repo)
+	log.Infof(msg.START_CLONE, config.User, config.Repo)
 
 	cmd := exec.Command("git", "clone", cloneURI, config.FolderName)
 	output, err := cmd.Output()
 
 	if output, err := cmd.Output(); err != nil {
-		glog.Error(msg.FAIL_CLONE)
-		glog.Fatalf(err)
+		log.Error(msg.FAIL_CLONE)
+		log.Fatalf(err)
 	}
 
-	glog.Infof(msg.END_CLONE, config.User, config.Repo, config.FolderName)
+	log.Infof(msg.END_CLONE, config.User, config.Repo, config.FolderName)
 }
 
 func (gp *GitProvider) getCloneURI(config GitCloneConfig) string {
