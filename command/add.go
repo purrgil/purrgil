@@ -2,37 +2,35 @@ package commands
 
 import (
 	"github.com/op/go-logging"
-	"github.com/purrgil/file"
+	"github.com/purrgil/file-parser/purrgil"
+	"github.com/purrgil/purrgil/file"
 )
 
 var log = logging.MustGetLogger("purrgil.command.add")
 
 type AddParams struct {
-	From string
+	From      string
 	IsService bool
-	Name string
-	Provider string
-	IsHTTPS bool
-	Helper bool
+	Name      string
+	Provider  string
+	IsHTTPS   bool
+	Helper    bool
 }
 
 func Add(params AddParams) {
-	pf := file.GetPurrgilFile()
+	pf, err := file.GetPurrgilFile()
 
-	pf.AddPackage(params.Name, purrgil.PurrgilPackage{
-		Local,
-		purrgil.PurrgilPackageDownload{
-			Provider: params.Provider,
-			From: params.From,
-			SSH: !params.IsHTTPS,
-			PostInstall: []string{},
-		}
-		PurrgilPackageDeploy{},
-		[]string{},
-		map[string]string{},
-		map[string]string{},
-	})
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
 
-	InstallPackage(AddParams)
+	pf.Data.AddPackage(params.Name, purrgil.NewPkg(purrgil.PurrgilPackageDownload{
+		Provider:    params.Provider,
+		From:        params.From,
+		SSH:         !params.IsHTTPS,
+		PostInstall: []string{},
+	}))
+
+	InstallPackage(params)
 	pf.Save()
 }

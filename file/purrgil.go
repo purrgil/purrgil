@@ -1,27 +1,40 @@
 package file
 
 import (
+	"os"
+
 	"github.com/purrgil/file-parser"
 	"github.com/purrgil/file-parser/purrgil"
 )
 
+// PurrgilFile has a file pointer and a structured data
 type PurrgilFile struct {
 	File fileparser.File
-	Data purrgil.PurrgilFile
+	Data purrgil.Purrgil
 }
 
+// GetPurrgilFile load a purrgil.yml file and your data inside data field
 func GetPurrgilFile() (PurrgilFile, error) {
-	file := fileparser.LoadFile(os.GetWd(), "purrgil", "yml")
+	pwd, _ := os.Getwd()
 
-	if data, err := ParseToPurrgilFile(file.Content); err != nil {
-		return nil, err
+	file, loadFileErr := fileparser.LoadFile(pwd, "purrgil", "yml")
+	if loadFileErr != nil {
+		return PurrgilFile{}, loadFileErr
 	}
 
-	return PurrgilFile{ file, data }, nil
+	data, parseErr := purrgil.ParseToPurrgil(file.Content)
+	if parseErr != nil {
+		return PurrgilFile{}, parseErr
+	}
+
+	return PurrgilFile{file, data}, nil
 }
 
+// Save convert data to byte and trigger save file
 func (dc *PurrgilFile) Save() error {
-	if content, err := dc.Data.ParseToByte(); err != nil {
+	content, err := dc.Data.ParseToByte()
+
+	if err != nil {
 		return err
 	}
 

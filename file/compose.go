@@ -2,27 +2,41 @@ package file
 
 import (
 	"os"
+
 	"github.com/purrgil/file-parser"
 	"github.com/purrgil/file-parser/docker/compose"
 )
 
+// DockerCompose has a file pointer and a structured data
 type DockerCompose struct {
 	File fileparser.File
 	Data compose.DockerCompose
 }
 
+// GetDockerCompose load a docker-compose.yml file and your data inside data field
 func GetDockerCompose() (DockerCompose, error) {
-	file := fileparser.LoadFile(os.GetWd(), "docker-compose", "yml")
+	pwd, _ := os.Getwd()
 
-	if data, err := ParseToDockerCompose(file.Content); err != nil {
-		return nil, err
+	file, loadFileErr := fileparser.LoadFile(pwd, "docker-compose", "yml")
+
+	if loadFileErr != nil {
+		return DockerCompose{}, loadFileErr
 	}
 
-	return DockerCompose{ file, data }, nil
+	data, parseErr := compose.ParseToDockerCompose(file.Content)
+
+	if parseErr != nil {
+		return DockerCompose{}, parseErr
+	}
+
+	return DockerCompose{file, data}, nil
 }
 
+// Save convert data to byte and trigger save file
 func (dc *DockerCompose) Save() error {
-	if content, err := dc.Data.ParseToByte(); err != nil {
+	content, err := dc.Data.ParseToByte()
+
+	if err != nil {
 		return err
 	}
 

@@ -19,16 +19,15 @@ var (
 	install = app.Command("install", msg.INSTALL_CMD_DESCRIPTION)
 
 	// purrgil add <pkg> --not-a-service --name --provider --https --compose-helper
-	add = app.Command("add", msg.ADD_CMD_DESCRIPTION)
+	add       = app.Command("add", msg.ADD_CMD_DESCRIPTION)
 	addParams = cmd.AddParams{
-		From: app.Arg("pkg", msg.ADD_PKG_DESCRIPTION).String(),
-		IsService: !(*app.Flag("not-a-service", msg.ADD_NS_FLAG_DESCRIPTION).Bool()),
-		Name: *app.Flag("name", msg.ADD_NAME_FLAG_DESCRIPTION).Shot("N").String(),
-		Provider: *app.Flag("provider", msg.ADD_PROVIDER_FLAG_DESCRIPTION).Short("P").String(),
-		IsHTTPS: *app.Flag("https", msg.ADD_HTTPS_FLAG_DESCRIPTION).Bool(),
-		Helper: *app.Flag("compose-helper", msg.ADD_HELPER_FLAG_DESCRIPTION).Bool(),
+		From:      *add.Arg("pkg", msg.ADD_PKG_DESCRIPTION).String(),
+		IsService: !(*add.Flag("not-a-service", msg.ADD_NS_FLAG_DESCRIPTION).Bool()),
+		Name:      *add.Flag("name", msg.ADD_NAME_FLAG_DESCRIPTION).String(),
+		Provider:  *add.Flag("provider", msg.ADD_PROVIDER_FLAG_DESCRIPTION).String(),
+		IsHTTPS:   *add.Flag("https", msg.ADD_HTTPS_FLAG_DESCRIPTION).Bool(),
+		Helper:    *add.Flag("compose-helper", msg.ADD_HELPER_FLAG_DESCRIPTION).Bool(),
 	}
-
 )
 
 func main() {
@@ -38,8 +37,8 @@ func main() {
 
 	switch p {
 	case install.FullCommand():
-		cmd.Install(installFlags)
+		cmd.Install()
 	case add.FullCommand():
-		cmd.Add(addFlags)
+		cmd.Add(addParams)
 	}
 }
